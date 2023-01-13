@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  db:
+    image: bitnami/mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=secretpassword
+      - MYSQL_DATABASE=observatory_db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=mypassword
+    ports:
+      - '3306:3306'
+  myapp:
+    image: docker.io/bitnami/laravel:9
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=admin
+      - DB_DATABASE=observatory_db
+      - DB_PASSWORD=mypassword
+    volumes:
+      - '.:/app'
+    depends_on:
+      - db
